@@ -112,7 +112,7 @@ class nPuzzler
 			
 			//fill in the start state
 			String startStateString = puzzle.readLine();
-			startPuzzleGrid = ParseStateString(startStateString, startPuzzleGrid, puzzleSize);
+				startPuzzleGrid = ParseStateString(startStateString, startPuzzleGrid, puzzleSize);
 			
 			//fill in the end state
 			String goalStateString = puzzle.readLine();

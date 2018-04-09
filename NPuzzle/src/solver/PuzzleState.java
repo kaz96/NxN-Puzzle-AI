@@ -15,27 +15,22 @@ public class PuzzleState implements Comparable<PuzzleState>
 	public int HeuristicValue;
 	private int EvaluationFunction;
 	public direction PathFromParent;
-	public boolean explored;
 	public boolean Up;
 	public boolean Left;
 	public boolean Right;
 	public boolean Down;
-	public direction currentDirection;
+	public boolean explored;
 	
 	
 	public PuzzleState(PuzzleState aParent, direction aFromParent, int[][] aPuzzle)
 	{
-		Up = false;
-		Down = false;
-		Left = false;
-		Right = false;
+		
 		Parent = aParent;
 		PathFromParent = aFromParent;
 		Puzzle = aPuzzle;
 		Cost = Parent.Cost + 1;
 		EvaluationFunction = 0;
 		HeuristicValue = 0;
-		explored = true;
 		
 		
 				
@@ -65,150 +60,66 @@ public class PuzzleState implements Comparable<PuzzleState>
 	}
 	
 	public direction[] getPossibleActions()
-	{
-		//find where the blank cell is and store the directions.
-		direction[] result;
-		int[] blankLocation = {0, 0};	//dummy value to avoid errors.
-		
-		try
-		{
-			blankLocation = findBlankCell();
-		}
-		catch(InvalidPuzzleException e)
-		{
-			System.out.println("There was an error in processing! Aborting...");
-			System.exit(1);
-		}
-		result = new direction[countMovements(blankLocation)];
-		int thisIndex = 0;
-		if(blankLocation[0] == 0)
-		{
-			//the blank cell is already as far left as it will go, it can move right
-			if (this.currentDirection == null)
-			{
-			result[thisIndex++] = direction.Right;
+    {
+        //find where the blank cell is and store the directions.
+        direction[] result;
+        int[] blankLocation = {0, 0};   //dummy value to avoid errors.
+       
+        try
+        {
+            blankLocation = findBlankCell();
+        }
+        catch(InvalidPuzzleException e)
+        {
+            System.out.println("There was an error in processing! Aborting...");
+            System.exit(1);
+        }
+        result = new direction[countMovements(blankLocation)];
+        int thisIndex = 0;
+        if(blankLocation[0] == 0)
+        {
+            //the blank cell is already as far left as it will go, it can move right
+            result[thisIndex++] = direction.Right;
 			this.Right = true;
-			}
-			else
-			{
-				if (this.currentDirection != direction.Left) // if the previous search was left then it cannot go right
-				{
-					// if previous search was not left then it can go right
-					result[thisIndex++] = direction.Right;
-					this.Right = true;
-				}
-			}
-		}
-		else if(blankLocation[0] == (Puzzle.length - 1))
-		{
-			if (this.currentDirection == null)
-			{
-				result[thisIndex++] = direction.Left;
-				this.Left = true;
-			}
-			else
-			{
-				if (this.currentDirection != direction.Right) // if the previous search was Right then it cannot go Left
-				{
-					// if previous search was not left then it can go right
-					result[thisIndex++] = direction.Left;
-					this.Left = true;
-				}
-			}	
-		}
-		else
-		{
-			if (this.currentDirection == null)
-			{
-				result[thisIndex++] = direction.Left;
-				this.Left = true;
-				result[thisIndex++] = direction.Right;
-				this.Right = true;
-			}
-			else
-			{
-				if (this.currentDirection != direction.Left) // if the previous search was left then it cannot go right
-				{
-					// if previous search was not left then it can go right
-					result[thisIndex++] = direction.Right;
-					this.Right = true;
-				}
-				if (this.currentDirection != direction.Right) // if the previous search was Right then it cannot go Left
-				{
-					// if previous search was not left then it can go right
-					result[thisIndex++] = direction.Left;
-					this.Left = true;
-				}	
-			}
-		}
-		
-		if(blankLocation[1] == 0)
-		{
-			if (this.currentDirection == null)
-			{
-				result[thisIndex++] = direction.Down;
-				this.Down = true;
-			
-			}
-			else
-			{
-				if (this.currentDirection != direction.Up) // if the previous search was up then it cannot go Down
-				{
-					// if previous search was not Up then it can go Down
-					result[thisIndex++] = direction.Down;
-					this.Down = true;
-				}
-			}
-			//the blank cell is already as far up as it will go, it can move down
-			
-		}
-		else if(blankLocation[1] == (Puzzle.length - 1))
-		{
-			if (this.currentDirection == null)
-			{
-				result[thisIndex++] = direction.Up;
-				this.Up = true;
-			
-			}
-			else
-			{
-				if (this.currentDirection != direction.Down) // if the previous search was up then it cannot go Down
-				{
-					// if previous search was not Up then it can go Down
-					result[thisIndex++] = direction.Up;
-					this.Up = true;
-				}
-			}
-		}
-		else
-		{
-			if (this.currentDirection == null)
-			{
-				result[thisIndex++] = direction.Up;
-				this.Up = true;
-				result[thisIndex++] = direction.Down;
-				this.Down = true;
-			
-			}
-			else
-			{
-				if (this.currentDirection != direction.Down) // if the previous search was up then it cannot go Down
-				{
-					// if previous search was not Up then it can go Down
-					result[thisIndex++] = direction.Up;
-					this.Up = true;
-				}
-				if (this.currentDirection != direction.Up) // if the previous search was up then it cannot go Down
-				{
-					// if previous search was not Up then it can go Down
-					result[thisIndex++] = direction.Down;
-					this.Down = true;
-				}	
-			}
-		}
 
-		return result;
-	}
+        }
+        else if(blankLocation[0] == (Puzzle.length - 1))
+        {
+            result[thisIndex++] = direction.Left;
+			this.Left = true;
+
+        }
+        else
+        {
+            result[thisIndex++] = direction.Left;
+            result[thisIndex++] = direction.Right;
+			this.Left = true;
+			this.Right = true;
+
+        }
+       
+        if(blankLocation[1] == 0)
+        {
+            //the blank cell is already as far up as it will go, it can move down
+            result[thisIndex++] = direction.Down;
+			this.Down = true;
+
+        }
+        else if(blankLocation[1] == (Puzzle.length - 1))
+        {
+            result[thisIndex++] = direction.Up;
+			this.Up = true;
+
+        }
+        else
+        {
+            result[thisIndex++] = direction.Up;
+            result[thisIndex++] = direction.Down;
+			this.Up = true;
+			this.Down = true;
+        }
+        return result;
+    }
 	
 	private int countMovements(int[] blankLocation)
 	{
@@ -272,7 +183,7 @@ public class PuzzleState implements Comparable<PuzzleState>
 		//Moving up moves the empty cell up (and the cell above it down)
 		//first, create the new one (the one to return)
 		PuzzleState result = new PuzzleState(this, aDirection, cloneArray(this.Puzzle));
-		result.currentDirection = aDirection;
+		result.PathFromParent = aDirection;
 		
 		//now, execute the changes: move the blank cell aDirection
 		//find the blankCell
@@ -350,7 +261,8 @@ public class PuzzleState implements Comparable<PuzzleState>
 		direction[] possibleMoves = getPossibleActions();
 		Children = new ArrayList<PuzzleState>();
 		
-	
+		this.explored = true;
+		
 		
 		
 		for(int i = 0; i < possibleMoves.length; i++)
