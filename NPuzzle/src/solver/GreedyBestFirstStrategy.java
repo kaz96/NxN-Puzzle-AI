@@ -64,7 +64,28 @@ public class GreedyBestFirstStrategy extends SearchMethod
 			
 			//Sort the fringe by it's Heuristic Value. The PuzzleComparator uses each nodes EvaluationFunction
 			// to determine a node's value, based on another. The sort method uses this to sort the Fringe.
+			
+			// Checking initial configuration for Frontier
+//			for (int i = 0; i< Frontier.size()-1; i++)
+//			{
+//			    System.out.println("Initial" + Arrays.deepToString(Frontier.get(i).Puzzle)  + ":  "+ Frontier.get(i).getEvaluationFunction());
+//				
+//			}
+			
 			Collections.sort(Frontier, new PuzzleComparator());
+			
+			// Space between Initial configuration and end
+		 //   System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+			
+			// Checking End configuration for Frontier
+
+//			for (int i = 0; i< Frontier.size()-1; i++)
+//			{
+//			    System.out.println("End" + Arrays.deepToString(Frontier.get(i).Puzzle)  + ":  "+ Frontier.get(i).getEvaluationFunction());
+//
+//				
+//			}
 		}
 		
 		//no more nodes and no path found?

@@ -8,6 +8,8 @@ import java.util.*;
  */
 public class PuzzleState implements Comparable<PuzzleState>
 {
+	public nPuzzler test;
+	public String implementation;
 	public int[][] Puzzle;
 	public PuzzleState Parent;
 	public ArrayList<PuzzleState> Children;
@@ -292,8 +294,11 @@ public class PuzzleState implements Comparable<PuzzleState>
 				
 				Children.add(move(possibleMoves[i]));
 				
-				break;
-				
+				if (nPuzzler.SearchType.equals("DFS"))
+				{
+					break;
+				}
+
 			}
 			catch (CantMoveThatWayException e)
 			{
